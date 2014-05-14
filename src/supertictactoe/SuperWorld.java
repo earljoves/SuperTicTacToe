@@ -18,6 +18,7 @@ public class SuperWorld extends World<Piece> {
 		games = new ArrayList<Game>();
 		grid = getGrid();
 		setupGrid();
+		setMessage("Welcome to TicTacToe.\nPlayer 1: Click any location to start.");
 		isPlayerOne = true;
 	}
 
@@ -41,6 +42,9 @@ public class SuperWorld extends World<Piece> {
 						setMessage("Player 2: Click a valid location to make a move.");
 				}
 			}
+			isIndividualGameOver(gameNumber); // temporary until the setting
+												// colors gets moved to a
+												// separate method
 		}
 		return true;
 	}
@@ -83,15 +87,6 @@ public class SuperWorld extends World<Piece> {
 	}
 
 	public void setGamesArray() {
-		// game 1 (0, 0)
-		// game 2 (0, 4)
-		// game 3 (0, 8)
-		// game 4 (4, 0)
-		// game 5 (4, 4)
-		// game 6 (4, 8)
-		// game 7 (8, 0)
-		// game 8 (8, 4)
-		// game 9 (8, 8)
 		int index = 0;
 		for (int row = 0; row <= 8; row += 4) {
 			for (int col = 0; col <= 8; col += 4) {
@@ -105,7 +100,6 @@ public class SuperWorld extends World<Piece> {
 
 	public int getGameNumber(Location loc) {
 		int gameNumber = 0;
-		// calculate the game number
 		int row = loc.getRow();
 		int col = loc.getCol();
 		if (row >= 0 && row <= 2) {

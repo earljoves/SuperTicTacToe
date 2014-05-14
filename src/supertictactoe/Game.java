@@ -3,6 +3,7 @@ package supertictactoe;
 import info.gridworld.grid.Grid;
 import info.gridworld.grid.Location;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 public class Game {
@@ -21,16 +22,25 @@ public class Game {
 		Piece pieceOne = null;
 		Piece pieceTwo = null;
 		Piece pieceThree = null;
+
 		// check columns
 		for (int i = 0; i <= 2; i++) {
 			pieceOne = pieces.get(i);
 			pieceTwo = pieces.get(i + 3);
 			pieceThree = pieces.get(i + 6);
 			if (!(pieceOne == null || pieceTwo == null || pieceThree == null)) {
-				if (pieceOne.isX() && pieceTwo.isX() && pieceThree.isX())
+				if (pieceOne.isX() && pieceTwo.isX() && pieceThree.isX()) {
+					pieceOne.setColor(Color.CYAN);
+					pieceTwo.setColor(Color.CYAN);
+					pieceThree.setColor(Color.CYAN);
 					return true;
-				if (pieceOne.isO() && pieceTwo.isO() && pieceThree.isO())
+				}
+				if (pieceOne.isO() && pieceTwo.isO() && pieceThree.isO()) {
+					pieceOne.setColor(Color.PINK);
+					pieceTwo.setColor(Color.PINK);
+					pieceThree.setColor(Color.PINK);
 					return true;
+				}
 			}
 		}
 
@@ -40,16 +50,28 @@ public class Game {
 			pieceTwo = pieces.get(i + 1);
 			pieceThree = pieces.get(i + 2);
 			if (!(pieceOne == null || pieceTwo == null || pieceThree == null)) {
-				if (pieceOne.isX() && pieceTwo.isX() && pieceThree.isX())
+				if (pieceOne.isX() && pieceTwo.isX() && pieceThree.isX()) {
+					pieceOne.setColor(Color.CYAN);
+					pieceTwo.setColor(Color.CYAN);
+					pieceThree.setColor(Color.CYAN);
 					return true;
-				if (pieceOne.isO() && pieceTwo.isO() && pieceThree.isO())
+				}
+				if (pieceOne.isO() && pieceTwo.isO() && pieceThree.isO()) {
+					pieceOne.setColor(Color.PINK);
+					pieceTwo.setColor(Color.PINK);
+					pieceThree.setColor(Color.PINK);
 					return true;
+				}
 			}
 		}
 
 		// check diagonals
 		// TODO: implement functionality
 		return false;
+	}
+
+	public void setPiecesColor() {
+		// TODO: impliment functionality
 	}
 
 	public void setPiecesArray(Location startLocation, Grid<Piece> grid) {
