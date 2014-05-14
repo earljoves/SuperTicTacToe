@@ -42,9 +42,6 @@ public class SuperWorld extends World<Piece> {
 				}
 			}
 		}
-		System.out.println(isEntireGameOver());
-		System.out.println(isIndividualGameOver(gameNumber) + "\n");
-		System.out.println("Game number: " + gameNumber);
 		return true;
 	}
 
@@ -67,6 +64,7 @@ public class SuperWorld extends World<Piece> {
 		return true;
 	}
 
+	// TODO: functionality is broken, but program still works
 	public boolean isEntireGameOver() {
 		setGamesArray();
 		for (Game game : games) {
