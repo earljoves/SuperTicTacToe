@@ -6,20 +6,23 @@ import info.gridworld.grid.Location;
 import info.gridworld.world.World;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 public class SuperWorld extends World<Piece> {
 	boolean isPlayerOne;
 	Grid<Piece> grid;
+	ArrayList<Game> games;
 
 	public SuperWorld() {
 		super(new BoundedGrid<Piece>(11, 11));
-		isPlayerOne = true;
+		games = new ArrayList<Game>();
 		grid = getGrid();
-		populateWithRocks();
+		setupGrid();
+		isPlayerOne = true;
 	}
 
 	public boolean locationClicked(Location loc) {
-		if (!checkGameOver()) {
+		if (!isGameOver()) {
 			if (isValidLocation(loc)) {
 				if (isPlayerOne) {
 					add(loc, new Piece("X"));
@@ -34,14 +37,13 @@ public class SuperWorld extends World<Piece> {
 				else
 					setMessage("Player 2: Click a valid location to make a move.");
 
-				checkGameOver();
+				isGameOver();
 			}
 		}
 		return true;
 	}
 
 	public void step() {
-		isPlayerOne = true;
 		for (int row = 0; row < grid.getNumRows(); row++) {
 			for (int col = 0; col < grid.getNumCols(); col++) {
 				Location currentLocation = new Location(row, col);
@@ -50,7 +52,8 @@ public class SuperWorld extends World<Piece> {
 			}
 		}
 		setMessage("Welcome to TicTacToe.\nPlayer 1: Click any location to start.");
-		populateWithRocks();
+		setupGrid();
+		isPlayerOne = true;
 	}
 
 	public boolean isValidLocation(Location loc) {
@@ -59,150 +62,54 @@ public class SuperWorld extends World<Piece> {
 		return true;
 	}
 
-	public boolean checkGameOver() {
-		Piece pieceOne = null;
-		Piece pieceTwo = null;
-		Piece pieceThree = null;
-		boolean gameOver = false;
-
-		// check columns
-		checkColumns(pieceOne, pieceTwo, pieceThree, gameOver);
-		if (gameOver)
-			return true;
-
-		// check rows
-		checkRows(pieceOne, pieceTwo, pieceThree, gameOver);
-		if (gameOver)
-			return true;
-
-		// check diagonals
-		// check major diagonal
-		int index = 0;
-		pieceOne = grid.get(new Location(index, index++));
-		pieceTwo = grid.get(new Location(index, index++));
-		pieceThree = grid.get(new Location(index, index));
-		if (!(pieceOne == null || pieceTwo == null || pieceThree == null)) {
-			if (pieceOne.isX() && pieceTwo.isX() && pieceThree.isX()) {
-				setMessage("Player 1 wins! Click STEP to restart.");
-				pieceOne.setColor(Color.GREEN);
-				pieceTwo.setColor(Color.GREEN);
-				pieceThree.setColor(Color.GREEN);
+	public boolean isGameOver() {
+		setGamesArray();
+		for (Game game : games) {
+			if (game.isGameOver())
 				return true;
-			}
-			if (pieceOne.isO() && pieceTwo.isO() && pieceThree.isO()) {
-				setMessage("Player 2 wins! Click STEP to restart.");
-				pieceOne.setColor(Color.GREEN);
-				pieceTwo.setColor(Color.GREEN);
-				pieceThree.setColor(Color.GREEN);
-				return true;
-			}
 		}
-
-		// check minor diagonal
-		// TODO: broken
-		index = 0;
-		int size = grid.getNumCols();
-		pieceOne = grid.get(new Location((size - index - 1),
-				(size - index++ - 1)));
-		pieceTwo = grid.get(new Location((size - index - 1),
-				(size - index++ - 1)));
-		pieceThree = grid.get(new Location((size - index - 1),
-				(size - index - 1)));
-		if (!(pieceOne == null || pieceTwo == null || pieceThree == null)) {
-			if (pieceOne.isX() && pieceTwo.isX() && pieceThree.isX()) {
-				setMessage("Player 1 wins! Click STEP to restart.");
-				return true;
-			}
-			if (pieceOne.isO() && pieceTwo.isO() && pieceThree.isO()) {
-				setMessage("Player 2 wins! Click STEP to restart.");
-				return true;
-			}
-		}
-
-		// check if cat's game
-		// TODO: implement functionality
-
 		return false;
 	}
 
-	public void checkColumns(Piece pieceOne, Piece pieceTwo, Piece pieceThree,
-			boolean gameOver) {
-		int row1 = 0;
-		for (int col1 = 0; col1 < grid.getNumCols(); col1++) {
-			// game 1
-			pieceOne = grid.get(new Location(row1++, col1));
-			pieceTwo = grid.get(new Location(row1++, col1));
-			pieceThree = grid.get(new Location(row1++, col1));
-			setWinner(pieceOne, pieceTwo, pieceThree, gameOver);
-
-			row1++;
-
-			// game 2
-			pieceOne = grid.get(new Location(row1++, col1));
-			pieceTwo = grid.get(new Location(row1++, col1));
-			pieceThree = grid.get(new Location(row1++, col1));
-			setWinner(pieceOne, pieceTwo, pieceThree, gameOver);
-			row1++;
-
-			// game 3
-			pieceOne = grid.get(new Location(row1++, col1));
-			pieceTwo = grid.get(new Location(row1++, col1));
-			pieceThree = grid.get(new Location(row1, col1));
-			setWinner(pieceOne, pieceTwo, pieceThree, gameOver);
-
-			row1 = 0;
+	public void setGamesArray() {
+		// game 1 (0, 0)
+		// game 2 (0, 4)
+		// game 3 (0, 8)
+		// game 4 (4, 0)
+		// game 5 (4, 4)
+		// game 6 (4, 8)
+		// game 7 (8, 0)
+		// game 8 (8, 4)
+		// game 9 (8, 8)
+		int index = 0;
+		for (int row = 0; row <= 8; row += 4) {
+			for (int col = 0; col <= 8; col += 4) {
+				Location startLocation = new Location(row, col);
+				Game game = new Game();
+				game.setPiecesArray(startLocation, grid);
+				games.add(index++, game);
+			}
 		}
 	}
 
-	public void checkRows(Piece pieceOne, Piece pieceTwo, Piece pieceThree,
-			boolean gameOver) {
-		int col2 = 0;
-		for (int row2 = 0; row2 < grid.getNumRows(); row2++) {
-			pieceOne = grid.get(new Location(row2, col2++));
-			pieceTwo = grid.get(new Location(row2, col2++));
-			pieceThree = grid.get(new Location(row2, col2++));
-			setWinner(pieceOne, pieceTwo, pieceThree, gameOver);
-
-			col2++;
-
-			pieceOne = grid.get(new Location(row2, col2++));
-			pieceTwo = grid.get(new Location(row2, col2++));
-			pieceThree = grid.get(new Location(row2, col2++));
-			setWinner(pieceOne, pieceTwo, pieceThree, gameOver);
-
-			col2++;
-
-			pieceOne = grid.get(new Location(row2, col2++));
-			pieceTwo = grid.get(new Location(row2, col2++));
-			pieceThree = grid.get(new Location(row2, col2));
-			setWinner(pieceOne, pieceTwo, pieceThree, gameOver);
-
-			col2 = 0;
-		}
-		gameOver = false;
-	}
-
-	public void setWinner(Piece pieceOne, Piece pieceTwo, Piece pieceThree,
-			boolean gameOver) {
+	public void setWinner(Piece pieceOne, Piece pieceTwo, Piece pieceThree) {
 		if (!(pieceOne == null || pieceTwo == null || pieceThree == null)) {
 			if (pieceOne.isX() && pieceTwo.isX() && pieceThree.isX()) {
 				setMessage("Player 1 wins! Click STEP to restart.");
 				pieceOne.setColor(Color.BLUE);
 				pieceTwo.setColor(Color.BLUE);
 				pieceThree.setColor(Color.BLUE);
-				gameOver = true;
 			}
 			if (pieceOne.isO() && pieceTwo.isO() && pieceThree.isO()) {
 				setMessage("Player 2 wins! Click STEP to restart.");
 				pieceOne.setColor(Color.RED);
 				pieceTwo.setColor(Color.RED);
 				pieceThree.setColor(Color.RED);
-				gameOver = true;
 			}
 		}
 	}
 
-	public void populateWithRocks() {
+	public void setupGrid() {
 		for (int i = 0; i < grid.getNumCols(); i++) {
 			Piece p = new Piece("");
 			p.setColor(Color.black);
@@ -216,5 +123,4 @@ public class SuperWorld extends World<Piece> {
 	public static void main(String[] args) {
 		new SuperWorld().show();
 	}
-
 }
