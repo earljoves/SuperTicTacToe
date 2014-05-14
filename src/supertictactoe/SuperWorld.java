@@ -18,12 +18,6 @@ public class SuperWorld extends World<Piece> {
 		populateWithRocks();
 	}
 
-	public boolean isValidLocation(Location loc) {
-		if (grid.get(loc) instanceof Piece)
-			return false;
-		return true;
-	}
-
 	public boolean locationClicked(Location loc) {
 		if (!checkGameOver()) {
 			if (isValidLocation(loc)) {
@@ -57,6 +51,12 @@ public class SuperWorld extends World<Piece> {
 		}
 		setMessage("Welcome to TicTacToe.\nPlayer 1: Click any location to start.");
 		populateWithRocks();
+	}
+
+	public boolean isValidLocation(Location loc) {
+		if (grid.get(loc) instanceof Piece)
+			return false;
+		return true;
 	}
 
 	public boolean checkGameOver() {
@@ -214,7 +214,7 @@ public class SuperWorld extends World<Piece> {
 	}
 
 	public static void main(String[] args) {
-		new UltimateWorld().show();
+		new SuperWorld().show();
 	}
 
 }
