@@ -22,24 +22,29 @@ public class SuperWorld extends World<Piece> {
 	}
 
 	public boolean locationClicked(Location loc) {
-		if (!isGameOver()) {
-			if (isValidLocation(loc)) {
-				if (isPlayerOne) {
-					add(loc, new Piece("X"));
-					isPlayerOne = false;
-				} else {
-					add(loc, new Piece("O"));
-					isPlayerOne = true;
+		int gameNumber = getGameNumber(loc);
+
+		if (!isEntireGameOver()) {
+			if (!isIndividualGameOver(gameNumber)) {
+				if (isValidLocation(loc)) {
+					if (isPlayerOne) {
+						add(loc, new Piece("X"));
+						isPlayerOne = false;
+					} else {
+						add(loc, new Piece("O"));
+						isPlayerOne = true;
+					}
+
+					if (isPlayerOne)
+						setMessage("Player 1: Click a valid location to make a move.");
+					else
+						setMessage("Player 2: Click a valid location to make a move.");
 				}
-
-				if (isPlayerOne)
-					setMessage("Player 1: Click a valid location to make a move.");
-				else
-					setMessage("Player 2: Click a valid location to make a move.");
-
-				isGameOver();
 			}
 		}
+		System.out.println(isEntireGameOver());
+		System.out.println(isIndividualGameOver(gameNumber) + "\n");
+		System.out.println("Game number: " + gameNumber);
 		return true;
 	}
 
@@ -62,12 +67,20 @@ public class SuperWorld extends World<Piece> {
 		return true;
 	}
 
-	public boolean isGameOver() {
+	public boolean isEntireGameOver() {
 		setGamesArray();
 		for (Game game : games) {
-			if (game.isGameOver())
-				return true;
+			if (!game.isGameOver())
+				return false;
 		}
+		return true;
+	}
+
+	public boolean isIndividualGameOver(int gameNumber) {
+		setGamesArray();
+		Game currentGame = games.get(gameNumber);
+		if (currentGame.isGameOver())
+			return true;
 		return false;
 	}
 
@@ -90,6 +103,39 @@ public class SuperWorld extends World<Piece> {
 				games.add(index++, game);
 			}
 		}
+	}
+
+	public int getGameNumber(Location loc) {
+		int gameNumber = 0;
+		// calculate the game number
+		int row = loc.getRow();
+		int col = loc.getCol();
+		if (row >= 0 && row <= 2) {
+			if (col >= 0 && col <= 2) {
+				gameNumber = 0;
+			} else if (col >= 4 && col <= 6) {
+				gameNumber = 1;
+			} else if (col >= 8 && col <= 10) {
+				gameNumber = 2;
+			}
+		} else if (row >= 4 && row <= 6) {
+			if (col >= 0 && col <= 2) {
+				gameNumber = 3;
+			} else if (col >= 4 && col <= 6) {
+				gameNumber = 4;
+			} else if (col >= 8 && col <= 10) {
+				gameNumber = 5;
+			}
+		} else if (row >= 8 && row <= 10) {
+			if (col >= 0 && col <= 2) {
+				gameNumber = 6;
+			} else if (col >= 4 && col <= 6) {
+				gameNumber = 7;
+			} else if (col >= 8 && col <= 10) {
+				gameNumber = 8;
+			}
+		}
+		return gameNumber;
 	}
 
 	public void setWinner(Piece pieceOne, Piece pieceTwo, Piece pieceThree) {
