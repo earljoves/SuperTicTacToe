@@ -30,11 +30,15 @@ public class Piece {
 		this.color = color;
 	}
 
+	public String getValue() {
+		return value;
+	}
+
 	public Color getColor() {
 		return color;
 	}
 
 	public String toString() {
-		return value;
+		return getValue();
 	}
 }
