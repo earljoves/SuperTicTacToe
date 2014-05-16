@@ -23,9 +23,6 @@ public class SuperWorld extends World<Piece> {
 		gameNumber = 0;
 
 		setupGrid();
-		setMessage("Welcome to TicTacToe.\nPlayer 1: Click any location to start.");
-
-		games.add(0, new Game(new Location(0, 0)));
 		refreshGame();
 	}
 
@@ -50,10 +47,6 @@ public class SuperWorld extends World<Piece> {
 			games.add(new Game(location));
 		}
 
-		for (Game game : games) {
-			System.out.println(game.getGameNumber());
-		}
-
 		// setup gridlines
 		for (int i = 0; i < grid.getNumCols(); i++) {
 			Piece p = new Piece();
@@ -66,9 +59,14 @@ public class SuperWorld extends World<Piece> {
 	}
 
 	public void refreshGame() {
+		// add pieces
 		for (Game game : games) {
-			for (Piece piece : game.getPiecesArray()) {
-
+			ArrayList<Piece> pieces = game.getPiecesArray();
+			int index = 0;
+			for (int row = game.START_LOCATION_ROW; row <= game.START_LOCATION_ROW + 2; row++) {
+				for (int col = game.START_LOCATION_COL; col <= game.START_LOCATION_COL + 2; col++) {
+					add(new Location(row, col), pieces.get(index++));
+				}
 			}
 		}
 	}

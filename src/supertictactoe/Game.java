@@ -1,25 +1,28 @@
 package supertictactoe;
 
-import info.gridworld.grid.Grid;
 import info.gridworld.grid.Location;
 
 import java.awt.Color;
 import java.util.ArrayList;
 
 public class Game {
-	// 0 | 1 | 2
-	// ---------
-	// 3 | 4 | 5
-	// ---------
-	// 6 | 7 | 8
 	private ArrayList<Piece> pieces;
-	private int gameNumber;
+	private Location startLocation;
+
+	int gameNumber;
+
+	public int START_LOCATION_ROW;
+	public int START_LOCATION_COL;
 
 	public Game(Location location) {
 		pieces = new ArrayList<Piece>();
-		fillWithPieces("");
-		gameNumber = getGameNumber(location);
-		setValues();
+		setStartLocation(location);
+		setGameNumber();
+
+		START_LOCATION_ROW = startLocation.getRow();
+		START_LOCATION_COL = startLocation.getCol();
+
+		fillWithPieces();
 	}
 
 	public boolean isGameOver() {
@@ -116,31 +119,19 @@ public class Game {
 		return false;
 	}
 
-	public void setPiecesColor() {
-		// TODO: implement functionality
-
-	}
-
-	public void fillWithPieces(String s) {
-		for (int i = 0; i < pieces.size(); i++) {
-			pieces.add(i, new Piece(""));
+	public void fillWithPieces() {
+		for (int i = 0; i <= 8; i++) {
+			addPiece(i, new Piece(""));
 		}
 	}
 
-	public void setPiecesArray(Location startLocation, Grid<Piece> grid) {
-		int startRow = startLocation.getRow();
-		int startCol = startLocation.getCol();
-		for (int row = startRow; row <= startRow + 2; row++) {
-			for (int col = startCol; col <= startCol + 2; col++) {
-				pieces.add(grid.get(new Location(row, col)));
-			}
-		}
+	public void addPiece(int index, Piece piece) {
+		pieces.add(index, piece);
 	}
 
-	public int getGameNumber(Location loc) {
-		int gameNumber = 0;
-		int row = loc.getRow();
-		int col = loc.getCol();
+	public void setGameNumber() {
+		int row = startLocation.getRow();
+		int col = startLocation.getCol();
 		if (row >= 0 && row <= 2) {
 			if (col >= 0 && col <= 2) {
 				gameNumber = 0;
@@ -166,28 +157,29 @@ public class Game {
 				gameNumber = 8;
 			}
 		}
-		return gameNumber;
-	}
-
-	public void setValues() {
-		for (Piece piece : pieces) {
-			piece.setValue(Integer.toString(gameNumber));
-		}
-	}
-
-	public void addPiece(Piece piece, int arrayIndex) {
-		pieces.add(arrayIndex, piece);
 	}
 
 	public void setGameNumber(int number) {
 		gameNumber = number;
 	}
 
+	public void setStartLocation(Location location) {
+		startLocation = location;
+	}
+
 	public int getGameNumber() {
 		return gameNumber;
 	}
 
+	public Location getStartLocation() {
+		return startLocation;
+	}
+
 	public ArrayList<Piece> getPiecesArray() {
 		return pieces;
+	}
+
+	public String toString() {
+		return pieces.toString();
 	}
 }
