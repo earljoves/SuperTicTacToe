@@ -12,7 +12,6 @@ public class SuperWorld extends World<Piece> {
 	ArrayList<Game> games;
 	boolean isPlayerOne;
 	Grid<Piece> grid;
-	int gameNumber;
 
 	public SuperWorld() {
 		super(new BoundedGrid<Piece>(11, 11));
@@ -20,7 +19,6 @@ public class SuperWorld extends World<Piece> {
 		games = new ArrayList<Game>();
 		isPlayerOne = true;
 		grid = getGrid();
-		gameNumber = 0;
 
 		setupGrid();
 		refreshGame();
@@ -59,6 +57,9 @@ public class SuperWorld extends World<Piece> {
 	}
 
 	public void refreshGame() {
+		// delete pieces
+		deletePiecesFromGrid();
+
 		// add pieces
 		for (Game game : games) {
 			ArrayList<Piece> pieces = game.getPiecesArray();
@@ -68,6 +69,14 @@ public class SuperWorld extends World<Piece> {
 					add(new Location(row, col), pieces.get(index++));
 				}
 			}
+		}
+	}
+
+	public void deletePiecesFromGrid() {
+		ArrayList<Location> occupiedLocations = grid.getOccupiedLocations();
+		for (Location location : occupiedLocations) {
+			if (!(grid.get(location).isBlank()))
+				grid.remove(location);
 		}
 	}
 
