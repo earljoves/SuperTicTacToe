@@ -13,10 +13,13 @@ public class Game {
 	// ---------
 	// 6 | 7 | 8
 	private ArrayList<Piece> pieces;
+	private int gameNumber;
 
-	public Game() {
+	public Game(Location location) {
 		pieces = new ArrayList<Piece>();
-		fillWithPieces();
+		fillWithPieces("");
+		gameNumber = getGameNumber(location);
+		setValues();
 	}
 
 	public boolean isGameOver() {
@@ -113,23 +116,15 @@ public class Game {
 		return false;
 	}
 
-	public void getArrayIndex(Location location) {
-
-	}
-
 	public void setPiecesColor() {
 		// TODO: implement functionality
 
 	}
 
-	public void fillWithPieces() {
+	public void fillWithPieces(String s) {
 		for (int i = 0; i < pieces.size(); i++) {
 			pieces.add(i, new Piece(""));
 		}
-	}
-
-	public void setGameArray() {
-
 	}
 
 	public void setPiecesArray(Location startLocation, Grid<Piece> grid) {
@@ -140,6 +135,56 @@ public class Game {
 				pieces.add(grid.get(new Location(row, col)));
 			}
 		}
+	}
+
+	public int getGameNumber(Location loc) {
+		int gameNumber = 0;
+		int row = loc.getRow();
+		int col = loc.getCol();
+		if (row >= 0 && row <= 2) {
+			if (col >= 0 && col <= 2) {
+				gameNumber = 0;
+			} else if (col >= 4 && col <= 6) {
+				gameNumber = 1;
+			} else if (col >= 8 && col <= 10) {
+				gameNumber = 2;
+			}
+		} else if (row >= 4 && row <= 6) {
+			if (col >= 0 && col <= 2) {
+				gameNumber = 3;
+			} else if (col >= 4 && col <= 6) {
+				gameNumber = 4;
+			} else if (col >= 8 && col <= 10) {
+				gameNumber = 5;
+			}
+		} else if (row >= 8 && row <= 10) {
+			if (col >= 0 && col <= 2) {
+				gameNumber = 6;
+			} else if (col >= 4 && col <= 6) {
+				gameNumber = 7;
+			} else if (col >= 8 && col <= 10) {
+				gameNumber = 8;
+			}
+		}
+		return gameNumber;
+	}
+
+	public void setValues() {
+		for (Piece piece : pieces) {
+			piece.setValue(Integer.toString(gameNumber));
+		}
+	}
+
+	public void addPiece(Piece piece, int arrayIndex) {
+		pieces.add(arrayIndex, piece);
+	}
+
+	public void setGameNumber(int number) {
+		gameNumber = number;
+	}
+
+	public int getGameNumber() {
+		return gameNumber;
 	}
 
 	public ArrayList<Piece> getPiecesArray() {

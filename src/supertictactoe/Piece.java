@@ -6,6 +6,10 @@ public class Piece {
 	private String value;
 	private Color color;
 
+	public Piece() {
+		this("");
+	}
+
 	public Piece(String value) {
 		setValue(value);
 	}
