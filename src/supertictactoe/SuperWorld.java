@@ -80,6 +80,11 @@ public class SuperWorld extends World<Piece> {
 		}
 	}
 
+	public Location getProcessedLocation(Location location) {
+		// TODO: implement functionality
+		return null;
+	}
+
 	public static void main(String[] args) {
 		new SuperWorld().show();
 	}

@@ -129,6 +129,12 @@ public class Game {
 		pieces.add(index, piece);
 	}
 
+	public void setPiecesColor(Color color) {
+		for (Piece piece : pieces) {
+			piece.setColor(color);
+		}
+	}
+
 	public void setGameNumber() {
 		int row = startLocation.getRow();
 		int col = startLocation.getCol();
