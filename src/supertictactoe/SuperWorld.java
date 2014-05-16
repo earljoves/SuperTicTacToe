@@ -130,21 +130,8 @@ public class SuperWorld extends World<Piece> {
 		return gameNumber;
 	}
 
-	public void setWinner(Piece pieceOne, Piece pieceTwo, Piece pieceThree) {
-		if (!(pieceOne == null || pieceTwo == null || pieceThree == null)) {
-			if (pieceOne.isX() && pieceTwo.isX() && pieceThree.isX()) {
-				setMessage("Player 1 wins! Click STEP to restart.");
-				pieceOne.setColor(Color.BLUE);
-				pieceTwo.setColor(Color.BLUE);
-				pieceThree.setColor(Color.BLUE);
-			}
-			if (pieceOne.isO() && pieceTwo.isO() && pieceThree.isO()) {
-				setMessage("Player 2 wins! Click STEP to restart.");
-				pieceOne.setColor(Color.RED);
-				pieceTwo.setColor(Color.RED);
-				pieceThree.setColor(Color.RED);
-			}
-		}
+	public void setCurrentGame() {
+
 	}
 
 	public void setupGrid() {
@@ -156,6 +143,11 @@ public class SuperWorld extends World<Piece> {
 			add(new Location(3, i), p);
 			add(new Location(7, i), p);
 		}
+
+	}
+
+	public void refreshGame() {
+
 	}
 
 	public static void main(String[] args) {

@@ -16,6 +16,7 @@ public class Game {
 
 	public Game() {
 		pieces = new ArrayList<Piece>();
+		fillWithPieces();
 	}
 
 	public boolean isGameOver() {
@@ -28,7 +29,8 @@ public class Game {
 			pieceOne = pieces.get(i);
 			pieceTwo = pieces.get(i + 3);
 			pieceThree = pieces.get(i + 6);
-			if (!(pieceOne == null || pieceTwo == null || pieceThree == null)) {
+			if (!(pieceOne.isBlank() || pieceTwo.isBlank() || pieceThree
+					.isBlank())) {
 				if (pieceOne.isX() && pieceTwo.isX() && pieceThree.isX()) {
 					pieceOne.setColor(Color.CYAN);
 					pieceTwo.setColor(Color.CYAN);
@@ -49,7 +51,8 @@ public class Game {
 			pieceOne = pieces.get(i);
 			pieceTwo = pieces.get(i + 1);
 			pieceThree = pieces.get(i + 2);
-			if (!(pieceOne == null || pieceTwo == null || pieceThree == null)) {
+			if (!(pieceOne.isBlank() || pieceTwo.isBlank() || pieceThree
+					.isBlank())) {
 				if (pieceOne.isX() && pieceTwo.isX() && pieceThree.isX()) {
 					pieceOne.setColor(Color.CYAN);
 					pieceTwo.setColor(Color.CYAN);
@@ -66,12 +69,67 @@ public class Game {
 		}
 
 		// check diagonals
-		// TODO: implement functionality
+		int i = 0;
+		pieceOne = pieces.get(i);
+		i += 4;
+		pieceTwo = pieces.get(i);
+		i += 4;
+		pieceThree = pieces.get(i);
+		if (!(pieceOne.isBlank() || pieceTwo.isBlank() || pieceThree.isBlank())) {
+			if (pieceOne.isX() && pieceTwo.isX() && pieceThree.isX()) {
+				pieceOne.setColor(Color.CYAN);
+				pieceTwo.setColor(Color.CYAN);
+				pieceThree.setColor(Color.CYAN);
+				return true;
+			}
+			if (pieceOne.isO() && pieceTwo.isO() && pieceThree.isO()) {
+				pieceOne.setColor(Color.PINK);
+				pieceTwo.setColor(Color.PINK);
+				pieceThree.setColor(Color.PINK);
+				return true;
+			}
+		}
+
+		i = 2;
+		pieceOne = pieces.get(i);
+		i += 2;
+		pieceTwo = pieces.get(i);
+		i += 2;
+		pieceThree = pieces.get(i);
+		if (!(pieceOne.isBlank() || pieceTwo.isBlank() || pieceThree.isBlank())) {
+			if (pieceOne.isX() && pieceTwo.isX() && pieceThree.isX()) {
+				pieceOne.setColor(Color.CYAN);
+				pieceTwo.setColor(Color.CYAN);
+				pieceThree.setColor(Color.CYAN);
+				return true;
+			}
+			if (pieceOne.isO() && pieceTwo.isO() && pieceThree.isO()) {
+				pieceOne.setColor(Color.PINK);
+				pieceTwo.setColor(Color.PINK);
+				pieceThree.setColor(Color.PINK);
+				return true;
+			}
+		}
 		return false;
 	}
 
+	public void getArrayIndex(Location location) {
+
+	}
+
 	public void setPiecesColor() {
-		// TODO: impliment functionality
+		// TODO: implement functionality
+
+	}
+
+	public void fillWithPieces() {
+		for (int i = 0; i < pieces.size(); i++) {
+			pieces.add(i, new Piece(""));
+		}
+	}
+
+	public void setGameArray() {
+
 	}
 
 	public void setPiecesArray(Location startLocation, Grid<Piece> grid) {

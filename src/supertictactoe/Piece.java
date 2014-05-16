@@ -22,6 +22,12 @@ public class Piece {
 		return false;
 	}
 
+	public boolean isBlank() {
+		if (value.equals(""))
+			return true;
+		return false;
+	}
+
 	public void setValue(String value) {
 		this.value = value;
 	}
