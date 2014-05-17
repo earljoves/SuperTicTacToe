@@ -12,6 +12,7 @@ public class SuperWorld extends World<Piece> {
 	ArrayList<Game> games;
 	boolean isPlayerOne;
 	Grid<Piece> grid;
+	int activeGame;
 
 	public SuperWorld() {
 		super(new BoundedGrid<Piece>(11, 11));
@@ -19,12 +20,16 @@ public class SuperWorld extends World<Piece> {
 		games = new ArrayList<Game>();
 		isPlayerOne = true;
 		grid = getGrid();
+		activeGame = 9; // move anywhere
 
+		setMessage("Welcome to SuperTicTacToe!\nPlayer 1: Click anywhere to begin.");
 		setupGrid();
 		refreshGame();
 	}
 
 	public boolean locationClicked(Location loc) {
+		int gameNumber = getGameNumber(loc);
+		int index = getIndex(games.get(gameNumber), loc);
 		return true;
 	}
 
@@ -80,9 +85,81 @@ public class SuperWorld extends World<Piece> {
 		}
 	}
 
-	public Location getProcessedLocation(Location location) {
-		// TODO: implement functionality
-		return null;
+	public int getGameNumber(Location startLocation) {
+		int row = startLocation.getRow();
+		int col = startLocation.getCol();
+		if (row >= 0 && row <= 2) {
+			if (col >= 0 && col <= 2) {
+				return 0;
+			} else if (col >= 4 && col <= 6) {
+				return 1;
+			} else if (col >= 8 && col <= 10) {
+				return 2;
+			}
+		} else if (row >= 4 && row <= 6) {
+			if (col >= 0 && col <= 2) {
+				return 3;
+			} else if (col >= 4 && col <= 6) {
+				return 4;
+			} else if (col >= 8 && col <= 10) {
+				return 5;
+			}
+		} else if (row >= 8 && row <= 10) {
+			if (col >= 0 && col <= 2) {
+				return 6;
+			} else if (col >= 4 && col <= 6) {
+				return 7;
+			} else if (col >= 8 && col <= 10) {
+				return 8;
+			}
+		}
+		return -1;
+	}
+
+	public int getIndex(Game game, Location location) {
+		int startRow = game.START_LOCATION_ROW;
+		int startCol = game.START_LOCATION_COL;
+		int row = location.getRow();
+		int col = location.getCol();
+
+		if (row == startRow) {
+			if (col == startCol)
+				return 0;
+			if (col == startCol + 1)
+				return 1;
+			if (col == startCol + 2)
+				return 2;
+		}
+		if (row == (startRow + 1)) {
+			if (col == startCol)
+				return 3;
+			if (col == startCol + 1)
+				return 4;
+			if (col == startCol + 2)
+				return 5;
+		}
+		if (row == (startRow + 2)) {
+			if (col == startCol)
+				return 6;
+			if (col == startCol + 1)
+				return 7;
+			if (col == startCol + 2)
+				return 8;
+		}
+
+		return -1;
+	}
+
+	public boolean isEntireGameOver() {
+		return false;
+	}
+
+	public boolean isIndividualGameOver() {
+		return false;
+	}
+
+	public boolean isCorrectGameNumber() {
+		return false;
 	}
 
 	public static void main(String[] args) {

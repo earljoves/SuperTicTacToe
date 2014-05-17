@@ -9,15 +9,12 @@ public class Game {
 	private ArrayList<Piece> pieces;
 	private Location startLocation;
 
-	int gameNumber;
-
 	public int START_LOCATION_ROW;
 	public int START_LOCATION_COL;
 
 	public Game(Location location) {
 		pieces = new ArrayList<Piece>();
 		setStartLocation(location);
-		setGameNumber();
 
 		START_LOCATION_ROW = startLocation.getRow();
 		START_LOCATION_COL = startLocation.getCol();
@@ -135,46 +132,8 @@ public class Game {
 		}
 	}
 
-	public void setGameNumber() {
-		int row = startLocation.getRow();
-		int col = startLocation.getCol();
-		if (row >= 0 && row <= 2) {
-			if (col >= 0 && col <= 2) {
-				gameNumber = 0;
-			} else if (col >= 4 && col <= 6) {
-				gameNumber = 1;
-			} else if (col >= 8 && col <= 10) {
-				gameNumber = 2;
-			}
-		} else if (row >= 4 && row <= 6) {
-			if (col >= 0 && col <= 2) {
-				gameNumber = 3;
-			} else if (col >= 4 && col <= 6) {
-				gameNumber = 4;
-			} else if (col >= 8 && col <= 10) {
-				gameNumber = 5;
-			}
-		} else if (row >= 8 && row <= 10) {
-			if (col >= 0 && col <= 2) {
-				gameNumber = 6;
-			} else if (col >= 4 && col <= 6) {
-				gameNumber = 7;
-			} else if (col >= 8 && col <= 10) {
-				gameNumber = 8;
-			}
-		}
-	}
-
-	public void setGameNumber(int number) {
-		gameNumber = number;
-	}
-
 	public void setStartLocation(Location location) {
 		startLocation = location;
-	}
-
-	public int getGameNumber() {
-		return gameNumber;
 	}
 
 	public Location getStartLocation() {
