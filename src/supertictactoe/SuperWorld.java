@@ -25,6 +25,8 @@ public class SuperWorld extends World<Piece> {
 		setMessage("Welcome to SuperTicTacToe!\nPlayer 1: Click anywhere to begin.");
 		setupGrid();
 		refreshGame();
+
+		add(new Location(1, 1), new Piece("X"));
 	}
 
 	public boolean locationClicked(Location loc) {
@@ -34,7 +36,9 @@ public class SuperWorld extends World<Piece> {
 	}
 
 	public void step() {
-
+		deletePiecesFromGrid();
+		setupGrid();
+		refreshGame();
 	}
 
 	public void setupGrid() {
