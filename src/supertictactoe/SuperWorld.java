@@ -32,6 +32,8 @@ public class SuperWorld extends World<Piece> {
 		int index = getIndex(games.get(gameNumber), loc);
 
 		refreshGame();
+
+		Game currentGame = games.get(index);
 		return true;
 	}
 
@@ -158,14 +160,6 @@ public class SuperWorld extends World<Piece> {
 	}
 
 	public boolean isEntireGameOver() {
-		return false;
-	}
-
-	public boolean isIndividualGameOver() {
-		return false;
-	}
-
-	public boolean isCorrectGameNumber() {
 		return false;
 	}
 
