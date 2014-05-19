@@ -25,13 +25,13 @@ public class SuperWorld extends World<Piece> {
 		setMessage("Welcome to SuperTicTacToe!\nPlayer 1: Click anywhere to begin.");
 		setupGrid();
 		refreshGame();
-
-		add(new Location(1, 1), new Piece("X"));
 	}
 
 	public boolean locationClicked(Location loc) {
 		int gameNumber = getGameNumber(loc);
 		int index = getIndex(games.get(gameNumber), loc);
+
+		refreshGame();
 		return true;
 	}
 
@@ -71,6 +71,9 @@ public class SuperWorld extends World<Piece> {
 
 		// add pieces
 		for (Game game : games) {
+			game.setGameColor(Color.WHITE);
+			game.setPiecesColor(Color.WHITE);
+
 			ArrayList<Piece> pieces = game.getPiecesArray();
 			int index = 0;
 			for (int row = game.START_LOCATION_ROW; row <= game.START_LOCATION_ROW + 2; row++) {

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class Game {
 	private ArrayList<Piece> pieces;
 	private Location startLocation;
+	private Color gameColor;
 
 	public int START_LOCATION_ROW;
 	public int START_LOCATION_COL;
@@ -132,6 +133,10 @@ public class Game {
 		}
 	}
 
+	public void setGameColor(Color color) {
+		gameColor = color;
+	}
+
 	public void setStartLocation(Location location) {
 		startLocation = location;
 	}
@@ -142,6 +147,10 @@ public class Game {
 
 	public ArrayList<Piece> getPiecesArray() {
 		return pieces;
+	}
+
+	public Color getGameColor() {
+		return gameColor;
 	}
 
 	public String toString() {
