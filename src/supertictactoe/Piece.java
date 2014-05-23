@@ -1,4 +1,4 @@
-package supertictactoe;
+package supertictactoe.rewrite;
 
 import java.awt.Color;
 

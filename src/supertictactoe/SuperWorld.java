@@ -1,4 +1,4 @@
-package supertictactoe;
+package supertictactoe.rewrite;
 
 import info.gridworld.grid.BoundedGrid;
 import info.gridworld.grid.Grid;
@@ -12,7 +12,7 @@ public class SuperWorld extends World<Piece> {
 	ArrayList<Game> games;
 	boolean isPlayerOne;
 	Grid<Piece> grid;
-	int activeGame;
+	int currentGame;
 
 	public SuperWorld() {
 		super(new BoundedGrid<Piece>(11, 11));
@@ -20,7 +20,7 @@ public class SuperWorld extends World<Piece> {
 		games = new ArrayList<Game>();
 		isPlayerOne = true;
 		grid = getGrid();
-		activeGame = 9; // move anywhere
+		currentGame = 9; // move anywhere
 
 		setMessage("Welcome to SuperTicTacToe!\nPlayer 1: Click anywhere to begin.");
 		setupGrid();
@@ -31,16 +31,74 @@ public class SuperWorld extends World<Piece> {
 		int gameNumber = getGameNumber(loc);
 		int index = getIndex(games.get(gameNumber), loc);
 
+		Game activeGame = games.get(gameNumber);
+		Game nextGame = games.get(index);
+
+		if (isPlayerOne)
+			setMessage("Player 2: Click in the green square to move.");
+		else
+			setMessage("Player 1: Click in the green square to move.");
+
+		for (Game game : games) {
+			game.setColor(Color.WHITE);
+		}
+
 		refreshGame();
 
-		Game currentGame = games.get(index);
+		if (!isEntireGameOver()) {
+			if (currentGame == gameNumber) {
+				if (!activeGame.isGameOver()) {
+					if (!activeGame.isIndexFull(index)) {
+						if (isPlayerOne) {
+							activeGame.addPiece(index, new Piece("X"));
+							isPlayerOne = false;
+						} else {
+							activeGame.addPiece(index, new Piece("O"));
+							isPlayerOne = true;
+						}
+						if (nextGame.isGameOver())
+							currentGame = 9;
+						else
+							currentGame = index;
+					}
+				}
+			}
+			if (currentGame == 9) {
+				if (!activeGame.isGameOver()) {
+					if (!activeGame.isIndexFull(index)) {
+						if (isPlayerOne) {
+							activeGame.addPiece(index, new Piece("X"));
+							isPlayerOne = false;
+						} else {
+							activeGame.addPiece(index, new Piece("O"));
+							isPlayerOne = true;
+						}
+						if (nextGame.isGameOver())
+							currentGame = 9;
+						else
+							currentGame = index;
+					}
+				}
+			}
+		}
+
+		if (currentGame == 9) {
+			for (Game game : games)
+				game.setColor(new Color(169, 247, 164));
+		} else
+			nextGame.setColor(new Color(169, 247, 164));
+
+		refreshGame();
 		return true;
 	}
 
 	public void step() {
 		deletePiecesFromGrid();
-		setupGrid();
+		resetArrays();
 		refreshGame();
+		currentGame = 9;
+		setMessage("Welcome to SuperTicTacToe!\nPlayer 1: Click anywhere to begin.");
+		isPlayerOne = true;
 	}
 
 	public void setupGrid() {
@@ -73,15 +131,19 @@ public class SuperWorld extends World<Piece> {
 
 		// add pieces
 		for (Game game : games) {
-			game.setGameColor(Color.WHITE);
-			game.setPiecesColor(Color.WHITE);
-
 			ArrayList<Piece> pieces = game.getPiecesArray();
 			int index = 0;
 			for (int row = game.START_LOCATION_ROW; row <= game.START_LOCATION_ROW + 2; row++) {
 				for (int col = game.START_LOCATION_COL; col <= game.START_LOCATION_COL + 2; col++) {
 					add(new Location(row, col), pieces.get(index++));
 				}
+			}
+
+			if (game.isXWin()) {
+				game.setColor(new Color(245, 136, 201));
+			}
+			if (game.isOWin()) {
+				game.setColor(new Color(110, 157, 218));
 			}
 		}
 	}
@@ -91,6 +153,12 @@ public class SuperWorld extends World<Piece> {
 		for (Location location : occupiedLocations) {
 			if (!(grid.get(location).isBlank()))
 				grid.remove(location);
+		}
+	}
+
+	public void resetArrays() {
+		for (Game game : games) {
+			game.fillWithPieces();
 		}
 	}
 
@@ -160,7 +228,11 @@ public class SuperWorld extends World<Piece> {
 	}
 
 	public boolean isEntireGameOver() {
-		return false;
+		for (Game game : games) {
+			if (!game.isGameOver())
+				return false;
+		}
+		return true;
 	}
 
 	public static void main(String[] args) {
